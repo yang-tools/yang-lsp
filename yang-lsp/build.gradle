@@ -26,7 +26,8 @@ subprojects {
 	apply plugin: 'signing'
 
 	sourceCompatibility = '1.8'
-
+	targetCompatibility = '1.8'
+	
 	java {
 		withJavadocJar()
 		withSourcesJar()
@@ -43,6 +44,17 @@ subprojects {
 
 	apply from: "${rootDir}/gradle/source-layout.gradle"
 	apply from: "${rootDir}/gradle/publishing.gradle"
+	
+	ext.xtextVersion = '2.26.0.M1'
+	
+	configurations.all {
+		if (name.contains("Tooling")) {
+			dependencies {
+				add(name, "org.eclipse.xtend:org.eclipse.xtend.core:${xtextVersion}")
+				add(name, platform("org.eclipse.xtext:xtext-dev-bom:${xtextVersion}"))
+			}
+		}
+	}
 }
 
 task clean(type: Delete) {
